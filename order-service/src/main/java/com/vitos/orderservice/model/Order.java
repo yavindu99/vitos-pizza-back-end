@@ -22,7 +22,13 @@ public class Order {
 
     private String orderNo;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderItem> orderItems;
+
+    private String customerName;
+
+    private String customerContactNo;
+
+    private String customerAddress;
 
 }

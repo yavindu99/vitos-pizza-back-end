@@ -18,12 +18,15 @@ public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     private String skuNumber;
 
     private BigDecimal price;
 
     private Integer quantity;
+
+    @ManyToOne
+    private Order order;
 
 }

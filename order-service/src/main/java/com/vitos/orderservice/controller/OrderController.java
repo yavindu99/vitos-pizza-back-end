@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/order")
 @RequiredArgsConstructor
 public class OrderController {
-
     private final OrderService orderService;
-
     @PostMapping
     public ResponseEntity<?> placeOrder(@RequestBody OrderRequest orderRequest){
 
@@ -22,6 +20,5 @@ public class OrderController {
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
-
 
 }

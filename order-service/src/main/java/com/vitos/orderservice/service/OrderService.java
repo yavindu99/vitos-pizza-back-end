@@ -1,16 +1,17 @@
 package com.vitos.orderservice.service;
 
-import com.vitos.orderservice.dto.OrderRequest;
-import com.vitos.orderservice.dto.OrderRequestItem;
-import com.vitos.orderservice.dto.OrderResponse;
-import com.vitos.orderservice.dto.OrderResponseItem;
+import com.vitos.orderservice.dto.*;
 import com.vitos.orderservice.model.Order;
 import com.vitos.orderservice.model.OrderItem;
 import com.vitos.orderservice.repsitory.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,11 +19,27 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final WebClient webClient;
 
     public OrderResponse placeOrder(OrderRequest orderRequest){
 
         Order order = mapOrderRequestToOrder(orderRequest);
+        order.setOrderNo(UUID.randomUUID().toString());
         Order newOrder = orderRepository.save(order);
+
+        PaymentRequest paymentRequest = PaymentRequest.builder()
+                .orderId(newOrder.getOrderNo())
+                .payment(orderRequest.getPaymentRequest().getPayment())
+                .paymentMethod(orderRequest.getPaymentRequest().getPaymentMethod())
+                .payment(orderRequest.getPaymentRequest().getPayment())
+                .build();
+
+        webClient.post().uri("http://localhost:8082/api/payment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(paymentRequest)
+                .retrieve()
+                .bodyToMono(PaymentResponse.class)
+                .block();
 
         return mapOrderToOrderResponse(newOrder);
 
@@ -32,6 +49,9 @@ public class OrderService {
 
         return OrderResponse.builder()
                 .id(order.getId())
+                .customerName(order.getCustomerName())
+                .customerAddress(order.getCustomerAddress())
+                .customerContactNo(order.getCustomerContactNo())
                 .orderItems(mapOrderItemsToOrderResponseItem(order.getOrderItems()))
                 .build();
 
@@ -50,6 +70,9 @@ public class OrderService {
 
         return Order.builder()
                 .orderItems(mapOrderRequestItemsToOrderItems(orderRequest.getOrderItems()))
+                .customerName(orderRequest.getCustomerName())
+                .customerAddress(orderRequest.getCustomerAddress())
+                .customerContactNo(orderRequest.getCustomerContactNo())
                 .build();
 
     }

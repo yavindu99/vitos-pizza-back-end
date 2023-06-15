@@ -16,5 +16,11 @@ import java.util.List;
 @Builder
 public class OrderRequest {
 
+    private String customerName;
+
+    private String customerContactNo;
+
+    private String customerAddress;
     private List<OrderRequestItem> orderItems;
+    private PaymentRequest paymentRequest;
 }

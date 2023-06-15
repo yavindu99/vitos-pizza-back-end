@@ -12,10 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class OrderResponse {
-
     private Long id;
-
     private String orderNo;
-
     private List<OrderResponseItem> orderItems;
+
+    private String customerName;
+
+    private String customerContactNo;
+
+    private String customerAddress;
 }

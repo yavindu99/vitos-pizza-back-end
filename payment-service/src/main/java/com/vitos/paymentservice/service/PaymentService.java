@@ -11,15 +11,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentService {
     private final PaymentRepository paymentRepository;
-
     public PaymentResponse pay(PaymentRequest paymentRequest){
 
+        //Call to a payment gateway
         Payment payment  = mapPaymentRquestToPayment(paymentRequest);
         Payment newPayment = paymentRepository.save(payment);
 
         return mapPaymentToPaymentResponse(newPayment);
     }
-
     private PaymentResponse mapPaymentToPaymentResponse(Payment newPayment) {
 
         return PaymentResponse.builder()
@@ -30,7 +29,6 @@ public class PaymentService {
                 .build();
 
     }
-
     private Payment mapPaymentRquestToPayment(PaymentRequest paymentRequest) {
 
         return Payment.builder()
