@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public OrderResponse placeOrder(OrderRequest orderRequest){
 
@@ -34,7 +34,7 @@ public class OrderService {
                 .payment(orderRequest.getPaymentRequest().getPayment())
                 .build();
 
-        webClient.post().uri("http://localhost:8082/api/payment")
+        webClientBuilder.build().post().uri("http://payment-service/api/payment")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(paymentRequest)
                 .retrieve()
