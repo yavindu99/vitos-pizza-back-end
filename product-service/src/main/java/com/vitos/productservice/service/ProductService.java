@@ -48,11 +48,7 @@ public class ProductService {
 
         List<ProductResponse> list = productRepository.findAll()
                 .stream()
-                .map(product -> ProductResponse.builder()
-                        .id(product.getId())
-                        .price(product.getPrice())
-                        .category(product.getCategory())
-                        .name(product.getName()).build())
+                .map(product -> mapToProductResponse(product))
                 .collect(Collectors.toList());
 
         log.info("Product list [{}]", list.size());
@@ -68,12 +64,7 @@ public class ProductService {
 
         log.info("Found product with id [{}]", id);
 
-        return ProductResponse.builder()
-                .id(product.getId())
-                .name(product.getName())
-                .category(product.getCategory())
-                .price(product.getPrice())
-                .build();
+        return mapToProductResponse(product);
 
     }
 
@@ -85,11 +76,15 @@ public class ProductService {
 
         log.info("Found product with name [{}]", name);
 
+        return mapToProductResponse(product);
+    }
+
+    private ProductResponse mapToProductResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
-                .name(product.getName())
-                .category(product.getCategory())
                 .price(product.getPrice())
+                .category(product.getCategory())
+                .name(product.getName())
                 .build();
     }
 }
