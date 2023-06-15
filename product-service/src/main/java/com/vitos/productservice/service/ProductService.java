@@ -61,10 +61,12 @@ public class ProductService {
     }
 
     public ProductResponse findById(String id) throws Exception {
-        log.info("Find product by id [{}]", id);
+        log.info("Finding product by id [{}]", id);
 
         Product product = productRepository.findById(id).orElseThrow(
-                ()-> new Exception(String.format("Product[%s] not found", id)));
+                () -> new Exception(String.format("Product[%s] not found", id)));
+
+        log.info("Found product with id [{}]", id);
 
         return ProductResponse.builder()
                 .id(product.getId())
@@ -73,5 +75,21 @@ public class ProductService {
                 .price(product.getPrice())
                 .build();
 
+    }
+
+    public ProductResponse findByName(String name) throws Exception {
+        log.info("Finding product by name [{}]", name);
+
+        Product product = productRepository.findByName(name).orElseThrow(
+                () -> new Exception(String.format("Product[%s] not found", name)));
+
+        log.info("Found product with name [{}]", name);
+
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .category(product.getCategory())
+                .price(product.getPrice())
+                .build();
     }
 }

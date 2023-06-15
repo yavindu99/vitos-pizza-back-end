@@ -48,5 +48,18 @@ public class ProductController {
 
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
+    @GetMapping("by-name/{name}")
+    public ResponseEntity<?> getByName(@PathVariable(name = "name") String name){
+
+        ProductResponse product;
+        try {
+            product = productService.findByName(name);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
 
 }
