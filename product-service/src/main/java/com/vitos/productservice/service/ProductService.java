@@ -26,17 +26,18 @@ public class ProductService {
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .price(productRequest.getPrice())
+                .tags(productRequest.getTags())
+                .favorite(productRequest.getFavorite())
+                .stars(productRequest.getStars())
+                .imageUrl(productRequest.getImageUrl())
+                .origins(productRequest.getOrigins())
+                .cookTime(productRequest.getCookTime())
                 .category(productRequest.getCategory())
                 .build();
 
         Product newProduct = productRepository.save(product);
 
-        ProductResponse productResponse = ProductResponse.builder()
-                .id(newProduct.getId())
-                .name(newProduct.getName())
-                .category(newProduct.getCategory())
-                .price(newProduct.getPrice())
-                .build();
+        ProductResponse productResponse = mapToProductResponse(newProduct);
 
         log.info("Added new product [{}]", productResponse);
 
@@ -82,9 +83,15 @@ public class ProductService {
     private ProductResponse mapToProductResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
-                .price(product.getPrice())
-                .category(product.getCategory())
                 .name(product.getName())
+                .price(product.getPrice())
+                .tags(product.getTags())
+                .favorite(product.getFavorite())
+                .stars(product.getStars())
+                .imageUrl(product.getImageUrl())
+                .origins(product.getOrigins())
+                .cookTime(product.getCookTime())
+                .category(product.getCategory())
                 .build();
     }
 }

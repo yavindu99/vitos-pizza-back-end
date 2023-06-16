@@ -3,6 +3,7 @@ package com.vitos.productservice.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,19 @@ public class ProductResponse {
 
     private String name;
 
+    private BigDecimal price;
+
     private String category;
 
-    private BigDecimal price;
+    private List<String> tags;
+
+    private Boolean favorite;
+
+    private Integer stars;
+
+    private String imageUrl;
+
+    private List<String> origins;
+
+    private String cookTime;
 }
